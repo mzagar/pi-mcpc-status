@@ -23,21 +23,21 @@ Use `/mcpc` to open the panel. It refreshes status every 15 seconds and supports
 - [Pi](https://pi.dev)
 - [Apify mcpc CLI](https://github.com/apify/mcpc) on `PATH`
 
-## Install from GitHub
+## Installation
 
-After publishing this repository:
+Install the published package from GitHub:
 
 ```sh
 pi install git:github.com/mzagar/pi-mcpc-status@v0.1.0
 ```
 
-For a local checkout:
+Alternatively, install it from a local checkout:
 
 ```sh
 pi install /absolute/path/to/pi-mcpc-status
 ```
 
-Then start Pi and run `/mcpc`. Use `/reload` after changing the extension locally.
+Restart Pi, then run `/mcpc` to open the connection panel. When developing from a local checkout, use `/reload` to apply extension changes.
 
 ## Notes
 
