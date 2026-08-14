@@ -25,19 +25,26 @@ Use `/mcpc` to open the panel. It refreshes status every 15 seconds and supports
 
 ## Installation
 
-Install the published package from GitHub:
+Install the published package globally for your Pi profile:
 
 ```sh
 pi install git:github.com/mzagar/pi-mcpc-status@v0.1.0
 ```
 
-Alternatively, install it from a local checkout:
+To install it only in the current project, run this from the project's root directory:
+
+```sh
+pi install -l git:github.com/mzagar/pi-mcpc-status@v0.1.0
+```
+
+Alternatively, install a local checkout globally or for the current project:
 
 ```sh
 pi install /absolute/path/to/pi-mcpc-status
+pi install -l /absolute/path/to/pi-mcpc-status
 ```
 
-Restart Pi, then run `/mcpc` to open the connection panel. When developing from a local checkout, use `/reload` to apply extension changes.
+Restart Pi, then run `/mcpc` to open the connection panel. Project-local packages require the project to be trusted. When developing from a local checkout, use `/reload` to apply extension changes.
 
 ## Notes
 
