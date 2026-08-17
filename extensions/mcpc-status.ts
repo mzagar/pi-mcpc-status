@@ -77,6 +77,7 @@ class McpcPanel {
     private readonly refresh: () => Promise<void>,
     private readonly restart: (session: McpcSession) => Promise<void>,
     private readonly reconnectAll: () => Promise<void>,
+    private readonly remove: (session: McpcSession) => Promise<void>,
     private readonly removeAll: () => Promise<void>,
     private readonly reauth: (session: McpcSession) => Promise<void>,
     private readonly close: () => void,
@@ -99,11 +100,12 @@ class McpcPanel {
     if (this.busy) return;
     if (matchesKey(data, Key.up) || data === "k") this.selected = Math.max(0, this.selected - 1);
     else if (matchesKey(data, Key.down) || data === "j") this.selected = Math.min(sessions.length - 1, this.selected + 1);
-    else if (data === "R") void this.refresh();
     else if (data === "r" && sessions[this.selected]) void this.restart(sessions[this.selected]);
-    else if (data === "A") void this.reconnectAll();
-    else if (data === "x") void this.removeAll();
+    else if (data === "R") void this.reconnectAll();
+    else if (data === "x" && sessions[this.selected]) void this.remove(sessions[this.selected]);
+    else if (data === "X") void this.removeAll();
     else if (data === "a" && sessions[this.selected]?.server.url) void this.reauth(sessions[this.selected]);
+    else if (data === "f") void this.refresh();
   }
 
   render(width: number): string[] {
@@ -146,8 +148,8 @@ class McpcPanel {
     if (this.busy) lines.push(t.fg("accent", this.message || "Working…"));
     else {
       const authHint = current?.server.url ? "a re-auth  " : "";
-      lines.push(t.fg("dim", `↑↓ select  r reconnect  A reconnect all  x remove all`));
-      lines.push(t.fg("dim", `${authHint}R refresh  esc close`));
+      lines.push(t.fg("dim", `↑↓ select  r reconnect  R reconnect all  x remove  X remove all`));
+      lines.push(t.fg("dim", `${authHint}f refresh  esc close`));
     }
     return lines.map((line) => truncateToWidth(line, width));
   }
@@ -236,6 +238,27 @@ export default function (pi: ExtensionAPI) {
     requestRender?.();
   };
 
+  const runRemove = async (ctx: ExtensionContext, session: McpcSession): Promise<void> => {
+    const confirmed = await ctx.ui.confirm(
+      `Remove ${session.name}?`,
+      "This closes and removes the selected mcpc session. Its OAuth profile is kept.",
+    );
+    if (!confirmed) return;
+
+    panel?.setBusy(true, `Removing ${session.name}…`);
+    requestRender?.();
+    try {
+      await mcpc(["close", session.name, "--json"]);
+      await refresh(ctx, false);
+      ctx.ui.notify(`Removed ${session.name}`, "info");
+    } catch (error) {
+      ctx.ui.notify(`Remove failed for ${session.name}: ${errorMessage(error)}`, "error");
+    } finally {
+      panel?.setBusy(false);
+      requestRender?.();
+    }
+  };
+
   const runRemoveAll = async (ctx: ExtensionContext): Promise<void> => {
     const confirmed = await ctx.ui.confirm(
       "Remove all mcpc data?",
@@ -302,6 +325,7 @@ export default function (pi: ExtensionAPI) {
           () => refresh(ctx),
           (session) => runRestart(ctx, session),
           () => runReconnectAll(ctx),
+          (session) => runRemove(ctx, session),
           () => runRemoveAll(ctx),
           (session) => runReauth(ctx, session),
           close,

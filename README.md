@@ -10,9 +10,10 @@ Use `/mcpc` to open the panel. It refreshes status every 15 seconds and supports
 
 - `r` — restart/reconnect the selected session (`mcpc restart @session --json`)
 - `a` — re-authenticate an HTTP/OAuth session, then restart it
-- `A` — restart/reconnect every session (with confirmation)
-- `x` — remove all `mcpc` sessions, OAuth profiles, and bridge logs (with confirmation)
-- `R` — refresh status immediately
+- `R` — restart/reconnect every session (with confirmation)
+- `x` — close and remove the selected session (with confirmation; preserves its OAuth profile)
+- `X` — remove all `mcpc` sessions, OAuth profiles, and bridge logs (with confirmation)
+- `f` — refresh status immediately
 - `↑`/`↓` (or `j`/`k`) — select a session
 - `Esc` — close the panel
 
@@ -56,7 +57,7 @@ mcpc login <server-url> --profile <profile>
 
 It opens a browser and waits for the OAuth callback, then restarts the selected session.
 
-> **Warning:** `x` runs `mcpc clean all --json`. This removes every saved `mcpc` session, OAuth profile, and bridge log, so the next connection will require a new login.
+> **Warning:** `X` runs `mcpc clean all --json`. This removes every saved `mcpc` session, OAuth profile, and bridge log, so the next connection will require a new login. `x` runs `mcpc close @session --json` only for the selected session and preserves its OAuth profile.
 
 ## Development
 
