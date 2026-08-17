@@ -29,13 +29,13 @@ Use `/mcpc` to open the panel. It refreshes status every 15 seconds and supports
 Install the published package globally for your Pi profile:
 
 ```sh
-pi install git:github.com/mzagar/pi-mcpc-status@v0.1.0
+pi install git:github.com/mzagar/pi-mcpc-status@v0.1.1
 ```
 
 To install it only in the current project, run this from the project's root directory:
 
 ```sh
-pi install -l git:github.com/mzagar/pi-mcpc-status@v0.1.0
+pi install -l git:github.com/mzagar/pi-mcpc-status@v0.1.1
 ```
 
 Alternatively, install a local checkout globally or for the current project:

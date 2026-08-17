@@ -1,6 +1,6 @@
 {
   "name": "pi-mcpc-status",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Compact live mcpc session status and controls for Pi",
   "keywords": ["pi-package", "pi", "mcpc", "mcp"],
   "license": "MIT",
