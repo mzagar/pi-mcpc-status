@@ -67,4 +67,9 @@ Try the extension without installing it:
 pi -e ./extensions/mcpc-status.ts
 ```
 
-There are no runtime npm dependencies. Pi supplies the declared peer dependencies.
+There are no runtime npm dependencies. Pi supplies the declared peer dependencies; the dev dependencies (`typescript`, `@earendil-works/pi-coding-agent`, `@earendil-works/pi-tui`) exist only for local type checking:
+
+```sh
+npm install
+npm run typecheck
+```
